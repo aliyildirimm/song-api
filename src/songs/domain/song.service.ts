@@ -15,6 +15,10 @@ export class SongService {
         return this.repository.findOne(id);
     }
 
+    async findMany(ids: number[]): Promise<SongEntity[]> {
+        return this.repository.findMany(ids);
+    }
+
     async create(song: {
         title: string,
         artists: number[],

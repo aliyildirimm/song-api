@@ -3,10 +3,10 @@ import { SongsModule } from './songs/songs.module';
 import { LoggerMiddleware } from './common/middlewares/logger.middleware';
 import { SongsController } from './songs/api/song.controller';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { SongEntity } from './songs/data/repositories/entities/song.entity';
+import { PlaylistModule } from './playlist/playlist.module';
 
 @Module({
-  imports: [SongsModule,
+  imports: [SongsModule, PlaylistModule,
     TypeOrmModule.forRoot({
       type: 'postgres',
       host: 'localhost',

@@ -26,6 +26,10 @@ export class SongRepository {
         })
     }
 
+    findMany(ids: number[]): Promise<SongEntity[]> {
+        return this.songRepository.findBy(ids.map(id => ({ id })));
+    }
+
     async create(song: {
         title: string,
         artists: number[],
