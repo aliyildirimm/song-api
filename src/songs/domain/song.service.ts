@@ -1,18 +1,21 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { SongEntity } from '../data/repositories/entities/song.entity';
-import { SongRepository } from '../data/repositories/songs.repository';
+import { SongRepository } from '../data/repositories/song.repository';
 
 @Injectable()
 export class SongService {
     constructor(@Inject(SongRepository) private readonly repository: SongRepository) {
     }
-    private readonly songs = ["Ali", "Veli"]
 
-    findAll() {
-        return this.songs;
+    async findAll(): Promise<SongEntity[]> {
+        return this.repository.findAll();
     }
 
-    create(song: {
+    async findOne(id: string): Promise<SongEntity> {
+        return this.repository.findOne(id);
+    }
+
+    async create(song: {
         title: string,
         artists: string[],
         duration: number,
@@ -20,5 +23,9 @@ export class SongService {
         lyrics: string,
     }): Promise<SongEntity> {
         return this.repository.create(song);
+    }
+
+    async delete(id: string): Promise<void> {
+        return this.repository.delete(id);
     }
 }

@@ -1,7 +1,7 @@
 import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
 import { SongsModule } from './songs/songs.module';
 import { LoggerMiddleware } from './common/middlewares/logger.middleware';
-import { SongsController } from './songs/api/songs.controller';
+import { SongsController } from './songs/api/song.controller';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { SongEntity } from './songs/data/repositories/entities/song.entity';
 

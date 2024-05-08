@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common';
-import { SongsController } from './api/songs.controller';
-import { SongService } from './domain/songs.service';
-import { SongRepository } from './data/repositories/songs.repository';
+import { SongsController } from './api/song.controller';
+import { SongService } from './domain/song.service';
+import { SongRepository } from './data/repositories/song.repository';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { SongEntity } from './data/repositories/entities/song.entity';
 
