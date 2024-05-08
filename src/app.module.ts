@@ -1,6 +1,6 @@
 import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
 import { SongsModule } from './songs/songs.module';
-import { LoggerMiddleware } from './common/middlewares/logger/logger.middleware';
+import { LoggerMiddleware } from './common/middlewares/logger.middleware';
 import { SongsController } from './songs/songs.controller';
 
 @Module({
