@@ -1,17 +1,13 @@
 import { Module } from '@nestjs/common';
-import { SongsController } from './songs.controller';
-import { SongsService } from './songs.service';
-import { connection } from 'src/common/constants/connection';
-import { ConfigService } from 'src/common/providers/config.service';
+import { SongsController } from './api/songs.controller';
+import { SongService } from './domain/songs.service';
+import { SongRepository } from './data/repositories/songs.repository';
+import { TypeOrmModule } from '@nestjs/typeorm';
+import { SongEntity } from './data/repositories/entities/song.entity';
 
 @Module({
+  imports: [TypeOrmModule.forFeature([SongEntity])],
   controllers: [SongsController],
-  providers: [SongsService,
-    {
-      provide: 'CONNECTION',
-      useValue: connection
-    },
-    ConfigService
-  ]
+  providers: [SongService, SongRepository]
 })
 export class SongsModule {}
