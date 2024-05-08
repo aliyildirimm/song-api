@@ -17,7 +17,7 @@ export class SongService {
 
     async create(song: {
         title: string,
-        artists: string[],
+        artists: number[],
         duration: number,
         releaseDate: Date,
         lyrics: string,

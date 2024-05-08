@@ -2,6 +2,7 @@ import { Repository } from "typeorm";
 import { SongEntity } from "./entities/song.entity";
 import { InjectRepository } from "@nestjs/typeorm";
 import { Injectable } from "@nestjs/common";
+import { ArtistEntity } from "./entities";
 
 @Injectable()
 export class SongRepository {
@@ -10,24 +11,47 @@ export class SongRepository {
     // injection tokens, but something like Repository<TaskEntity> just comes back as Repository
     // so Nest wouldn't know which repository to inject. By using the @InjectRepository() decorator
     // we are able to set the injection token metadata and override the reflected class value.
-    constructor(@InjectRepository(SongEntity) private readonly repository: Repository<SongEntity>) {}
+    constructor(
+        @InjectRepository(SongEntity) private readonly songRepository: Repository<SongEntity>,
+        @InjectRepository(ArtistEntity) private readonly artistRepository: Repository<ArtistEntity>
+    ) {}
 
     async findAll(): Promise<SongEntity[]> {
-        return await this.repository.find();
+        return await this.songRepository.find();
     }
 
     async findOne(id: string): Promise<SongEntity> {
-        return await this.repository.findOne({
+        return await this.songRepository.findOne({
             where: { id: +id }
         })
     }
 
-    async create(song: Omit<SongEntity, 'id'>): Promise<SongEntity> {
-        const lyrics = song.lyrics ?? '';
-        return await this.repository.save({ ...song, lyrics });
+    async create(song: {
+        title: string,
+        artists: number[],
+        duration: number,
+        releaseDate: Date,
+        lyrics?: string,
+    }): Promise<SongEntity> {
+        const songEntity = new SongEntity();
+        songEntity.title = song.title;
+        songEntity.duration = song.duration;
+        songEntity.releaseDate = song.releaseDate;
+        songEntity.lyrics = song.lyrics ?? '';
+
+        const artists = await this.artistRepository.findBy(
+            song.artists.map(artistId => ({ id: artistId }))
+        );
+
+        if (artists.length !== song.artists.length) {
+            throw new Error('Some artists were not found');
+        }
+
+        songEntity.artists = artists;
+        return await this.songRepository.save(songEntity);
     }
 
     async delete(id: string): Promise<void> {
-        await this.repository.delete({ id: +id });
+        await this.songRepository.delete({ id: +id });
     }
 }

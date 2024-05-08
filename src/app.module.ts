@@ -14,7 +14,7 @@ import { SongEntity } from './songs/data/repositories/entities/song.entity';
       username: 'postgres',
       password: 'postgres',
       database: 'postgres',
-      entities: [SongEntity],
+      entities: ['dist/**/*.entity{.ts,.js}'],
       synchronize: true, // set true for the development purposes for now
     })
   ],
