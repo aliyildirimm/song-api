@@ -1,5 +1,5 @@
+import { PlaylistEntity } from "src/playlist/data/repositories/entities";
 import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from "typeorm";
-import { PlaylistEntity } from ".";
 
 @Entity('User')
 export class UserEntity {

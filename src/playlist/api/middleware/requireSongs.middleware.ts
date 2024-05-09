@@ -12,7 +12,7 @@ interface RequesWithSongs extends Request {
 export class RequireSongsMiddleware implements NestMiddleware {
     constructor(@Inject(SongService) private readonly songsService: SongService) {}
 
-    async use(req: RequesWithSongs, res: Response, next: NextFunction) {
+    async use(req: RequesWithSongs, _res: Response, next: NextFunction) {
         const songIds: number[] = req.body.songIds;
         const songs = await this.songsService.findMany(songIds);
         if (songs.length !== songIds.length) {

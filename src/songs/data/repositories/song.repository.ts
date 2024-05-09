@@ -1,8 +1,8 @@
 import { Repository } from "typeorm";
-import { SongEntity } from "./entities/song.entity";
-import { InjectRepository } from "@nestjs/typeorm";
 import { Injectable } from "@nestjs/common";
-import { ArtistEntity } from "./entities";
+import { InjectRepository } from "@nestjs/typeorm";
+
+import { ArtistEntity, SongEntity } from "./entities";
 
 @Injectable()
 export class SongRepository {

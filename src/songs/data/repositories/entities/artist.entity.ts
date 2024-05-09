@@ -1,6 +1,5 @@
 import { Column, Entity, JoinColumn, JoinTable, ManyToMany, OneToOne, PrimaryGeneratedColumn } from "typeorm";
-import { UserEntity } from "./user.entity";
-import { SongEntity } from "./song.entity";
+import { UserEntity, SongEntity } from ".";
 
 @Entity("Artist")
 export class ArtistEntity {

@@ -7,7 +7,6 @@ export class PlaylistsController {
     constructor(
         @Inject(PlaylistService) private playlistService: PlaylistService
     ) {}
-    // constructor(private songService: SongService) {}
     @Post()
     create(@Body() createPlaylistDto: CreatePlaylistDto){
         return this.playlistService.createPlaylist(createPlaylistDto);
