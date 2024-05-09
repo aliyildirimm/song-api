@@ -23,7 +23,7 @@ export class UsersRepository {
     async getUserByUsername(username: string) {
         return this.repository.findOne({
             where: { username },
-            select: ['username', 'password']
+            select: ['username', 'id', 'password']
         });
     }
 

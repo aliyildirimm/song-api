@@ -13,4 +13,12 @@ export class ArtistRepository {
             ids.map(artistId => ({ id: artistId }))
         );
     }
+
+    getArtistByUserId(userId: number): Promise<ArtistEntity> {
+        return this.repository.findOne({
+            where: { user : {
+                id: userId
+            }
+        }});
+    }
 }

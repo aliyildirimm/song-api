@@ -8,4 +8,8 @@ export class ArtistService {
     getArtists(ids: number[]): Promise<ArtistEntity[]> {
         return this.artistRepository.getArtists(ids);
     }
+
+    getArtistByUserId(userId: number): Promise<ArtistEntity> {
+        return this.artistRepository.getArtistByUserId(userId);
+    }
 }
