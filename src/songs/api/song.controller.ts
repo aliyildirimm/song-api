@@ -1,10 +1,11 @@
 import { Body, Controller, Delete, Get, Param, Post } from '@nestjs/common';
 import { SongService } from '../domain/song.service';
 import { CreateSongDto } from './dto';
+import { ArtistService } from 'src/artist/domain/artist.domain';
 
 @Controller('songs')
 export class SongsController {
-    constructor(private songService: SongService) {}
+    constructor(private songService: SongService, private artistService: ArtistService) {}
     @Get()
     findAll(){
         return this.songService.findAll();
@@ -16,8 +17,14 @@ export class SongsController {
     }
 
     @Post()
-    create(@Body() createSongDto: CreateSongDto){
-        return this.songService.create(createSongDto);
+    async create(@Body() createSongDto: CreateSongDto){
+        // maybe convert this to validate artists etc? or maybe even middleware?
+        const artists = await this.artistService.getArtists(createSongDto.artists);
+        if (artists.length !== createSongDto.artists.length) {
+            throw new Error('Some artists were not found');
+        }
+
+        return this.songService.create(createSongDto, artists);
     }
 
     @Delete(':id')

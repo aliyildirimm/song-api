@@ -1,4 +1,4 @@
-import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
+import { MiddlewareConsumer, Module, NestModule, ValidationPipe } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 
 import { SongsModule } from './songs/songs.module';
@@ -8,6 +8,7 @@ import { PlaylistModule } from './playlist/playlist.module';
 import { AuthModule } from './auth/auth.module';
 import { AuthGuard } from './common/guards/auth.guard';
 import { JwtModule } from '@nestjs/jwt';
+import { ArtistModule } from './artist/artist.module';
 
 // TODO: create a separate config module for the all env variables
 @Module({
@@ -30,18 +31,25 @@ import { JwtModule } from '@nestjs/jwt';
     AuthModule,
     SongsModule,
     PlaylistModule,
+    ArtistModule,
   ],
   controllers: [],
-  providers: [{
-    provide: 'APP_GUARD',
-    useClass: AuthGuard,
-  }],
+  providers: [
+    {
+      provide: 'APP_GUARD',
+      useClass: AuthGuard,
+    },
+    {
+      provide: 'APP_PIPE',
+      useClass: ValidationPipe,
+    },
+  ],
 })
 
 export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
     consumer
       .apply(LoggerMiddleware)
-      .forRoutes(SongsController);
+      .forRoutes('*');
   }
 }

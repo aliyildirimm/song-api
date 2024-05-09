@@ -2,7 +2,8 @@ import { Repository } from "typeorm";
 import { Injectable } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 
-import { ArtistEntity, SongEntity } from "./entities";
+import { SongEntity } from "./entities";
+import { ArtistEntity } from "src/artist/data/repositories/entities/artist.entity";
 
 @Injectable()
 export class SongRepository {
@@ -13,7 +14,6 @@ export class SongRepository {
     // we are able to set the injection token metadata and override the reflected class value.
     constructor(
         @InjectRepository(SongEntity) private readonly songRepository: Repository<SongEntity>,
-        @InjectRepository(ArtistEntity) private readonly artistRepository: Repository<ArtistEntity>
     ) {}
 
     async findAll(): Promise<SongEntity[]> {
@@ -36,22 +36,14 @@ export class SongRepository {
         duration: number,
         releaseDate: Date,
         lyrics?: string,
-    }): Promise<SongEntity> {
+    }, artistEntity: ArtistEntity[]): Promise<SongEntity> {
         const songEntity = new SongEntity();
         songEntity.title = song.title;
         songEntity.duration = song.duration;
         songEntity.releaseDate = song.releaseDate;
         songEntity.lyrics = song.lyrics ?? '';
 
-        const artists = await this.artistRepository.findBy(
-            song.artists.map(artistId => ({ id: artistId }))
-        );
-
-        if (artists.length !== song.artists.length) {
-            throw new Error('Some artists were not found');
-        }
-
-        songEntity.artists = artists;
+        songEntity.artists = artistEntity;
         return await this.songRepository.save(songEntity);
     }
 

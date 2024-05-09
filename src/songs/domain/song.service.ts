@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 
 import { SongEntity } from '../data/repositories/entities/song.entity';
 import { SongRepository } from '../data/repositories/song.repository';
+import { ArtistEntity } from 'src/artist/data/repositories/entities/artist.entity';
 
 @Injectable()
 export class SongService {
@@ -26,8 +27,8 @@ export class SongService {
         duration: number,
         releaseDate: Date,
         lyrics: string,
-    }): Promise<SongEntity> {
-        return this.repository.create(song);
+    }, artistEntity: ArtistEntity[]): Promise<SongEntity> {
+        return this.repository.create(song, artistEntity);
     }
 
     async delete(id: string): Promise<void> {
