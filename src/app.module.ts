@@ -6,6 +6,8 @@ import { LoggerMiddleware } from './common/middlewares/logger.middleware';
 import { SongsController } from './songs/api/song.controller';
 import { PlaylistModule } from './playlist/playlist.module';
 import { AuthModule } from './auth/auth.module';
+import { AuthGuard } from './common/guards/auth.guard';
+import { JwtModule } from '@nestjs/jwt';
 
 // TODO: create a separate config module for the all env variables
 @Module({
@@ -20,12 +22,20 @@ import { AuthModule } from './auth/auth.module';
       entities: ['dist/**/*.entity{.ts,.js}'],
       synchronize: true, // set true for the development purposes for now
     }),
+    JwtModule.register({
+      global: true,
+      secret: process.env.JWT_SECRET ?? 'secret',
+      signOptions: { expiresIn: '3660s' },
+    }),
     AuthModule,
     SongsModule,
     PlaylistModule,
   ],
   controllers: [],
-  providers: [],
+  providers: [{
+    provide: 'APP_GUARD',
+    useClass: AuthGuard,
+  }],
 })
 
 export class AppModule implements NestModule {
