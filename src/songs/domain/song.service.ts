@@ -1,11 +1,11 @@
-import { Inject, Injectable } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 
 import { SongEntity } from '../data/repositories/entities/song.entity';
 import { SongRepository } from '../data/repositories/song.repository';
 
 @Injectable()
 export class SongService {
-    constructor(@Inject(SongRepository) private readonly repository: SongRepository) {
+    constructor(private readonly repository: SongRepository) {
     }
 
     async findAll(): Promise<SongEntity[]> {

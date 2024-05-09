@@ -4,9 +4,7 @@ import { PlaylistService } from '../domain/playlist.service';
 
 @Controller('playlists')
 export class PlaylistsController {
-    constructor(
-        @Inject(PlaylistService) private playlistService: PlaylistService
-    ) {}
+    constructor(private playlistService: PlaylistService) {}
     @Post()
     create(@Body() createPlaylistDto: CreatePlaylistDto){
         return this.playlistService.createPlaylist(createPlaylistDto);

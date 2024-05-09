@@ -7,6 +7,7 @@ import { SongsController } from './songs/api/song.controller';
 import { PlaylistModule } from './playlist/playlist.module';
 import { AuthModule } from './auth/auth.module';
 
+// TODO: create a separate config module for the all env variables
 @Module({
   imports: [
     TypeOrmModule.forRoot({

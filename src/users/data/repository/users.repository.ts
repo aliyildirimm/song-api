@@ -20,6 +20,13 @@ export class UsersRepository {
         });
     }
 
+    async getUserByUsername(username: string) {
+        return this.repository.findOne({
+            where: { username },
+            select: ['username', 'password']
+        });
+    }
+
     async getUserById(id: number) {
         return this.repository.find({
             where: { id }

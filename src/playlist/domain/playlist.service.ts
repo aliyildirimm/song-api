@@ -1,12 +1,10 @@
-import { Inject, Injectable } from "@nestjs/common";
+import { Injectable } from "@nestjs/common";
 
 import { PlaylistRepository } from "../data/repositories/playlist.repository";
 
 @Injectable()
 export class PlaylistService {
-    constructor(
-        @Inject(PlaylistRepository) private playlistRepository: PlaylistRepository
-    ) {}
+    constructor(private playlistRepository: PlaylistRepository) {}
     async createPlaylist(
         playlist: {
             userId: number,
