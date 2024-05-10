@@ -1,32 +1,48 @@
 import { MiddlewareConsumer, Module, NestModule, ValidationPipe } from '@nestjs/common';
-import { TypeOrmModule } from '@nestjs/typeorm';
+import { TypeOrmModule, TypeOrmModuleOptions } from '@nestjs/typeorm';
+import { ConfigModule, ConfigService } from '@nestjs/config';
+import { JwtModule, JwtModuleOptions } from '@nestjs/jwt';
 
 import { SongsModule } from './songs/songs.module';
 import { LoggerMiddleware } from './common/middlewares/logger.middleware';
-import { SongsController } from './songs/api/song.controller';
 import { PlaylistModule } from './playlist/playlist.module';
 import { AuthModule } from './auth/auth.module';
 import { AuthGuard } from './common/guards/auth.guard';
-import { JwtModule } from '@nestjs/jwt';
 import { ArtistModule } from './artist/artist.module';
+import config from './common/config/configuration';
 
-// TODO: create a separate config module for the all env variables
+export const databaseConfig = (configService: ConfigService): TypeOrmModuleOptions  => ({
+  type: 'postgres',
+  host: configService.get('database.host'),
+  port: configService.get('database.port'),
+  username: configService.get('database.username'),
+  password: configService.get('database.password'),
+  database: configService.get('database.database'),
+  synchronize: configService.get('database.synchronize'),
+  entities: configService.get('database.entities'),
+});
+
+export const jwtConfig = (configService: ConfigService): JwtModuleOptions  => ({
+  secret: configService.get('jwt.secret'),
+  signOptions: { expiresIn: configService.get('jwt.expiresIn') },
+});
+
 @Module({
   imports: [
-    TypeOrmModule.forRoot({
-      type: 'postgres',
-      host: process.env.DB_HOST || 'localhost',
-      port: +process.env.DB_PORT || 5432,
-      username: process.env.DB_USER || 'postgres',
-      password: process.env.DB_PASSWORD || 'postgres',
-      database: process.env.DB_NAME || 'postgres',
-      entities: ['dist/**/*.entity{.ts,.js}'],
-      synchronize: true, // set true for the development purposes for now
+    ConfigModule.forRoot({
+      isGlobal: true,
+      load: [config]
     }),
-    JwtModule.register({
+    TypeOrmModule.forRootAsync({
+      useFactory: databaseConfig,
+      inject: [ConfigService],
+    }),
+    JwtModule.registerAsync({
+      // The global option of JwtModule.registerAsync should be on the same
+      // level as useFactory, not a part of the options returned by the useFactory
       global: true,
-      secret: process.env.JWT_SECRET ?? 'secret',
-      signOptions: { expiresIn: '3660s' },
+      useFactory: jwtConfig,
+      inject: [ConfigService],
     }),
     AuthModule,
     SongsModule,
@@ -45,7 +61,6 @@ import { ArtistModule } from './artist/artist.module';
     },
   ],
 })
-
 export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
     consumer
