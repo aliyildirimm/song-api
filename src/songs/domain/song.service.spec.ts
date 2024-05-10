@@ -1,15 +1,14 @@
-import { Test, TestingModule } from '@nestjs/testing';
 import { SongService } from './song.service';
+import { mock } from 'jest-mock-extended';
+import { SongRepository } from '../data/repositories/song.repository';
+
+const mockSongRepository = mock<SongRepository>();
 
 describe('SongsService', () => {
   let service: SongService;
 
   beforeEach(async () => {
-    const module: TestingModule = await Test.createTestingModule({
-      providers: [SongService],
-    }).compile();
-
-    service = module.get<SongService>(SongService);
+    service = new SongService(mockSongRepository)
   });
 
   it('should be defined', () => {
