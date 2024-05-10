@@ -5,11 +5,20 @@ import {
     UnauthorizedException,
 } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
-import { JwtService } from '@nestjs/jwt';
+import { JwtService, TokenExpiredError } from '@nestjs/jwt';
 import { Request } from 'express';
 import { IS_PUBLIC_KEY } from '../decorators/public';
 
-// todo: learn guard - middleware and interceptor difference
+interface User {
+  userId: number;
+  username: string;
+  artistId: number;
+}
+
+export interface RequestWithUser extends Request {
+  user: User;
+}
+
 @Injectable()
 export class AuthGuard implements CanActivate {
   constructor(
@@ -42,7 +51,10 @@ export class AuthGuard implements CanActivate {
       );
 
       request['user'] = payload;
-    } catch {
+    } catch(error: unknown) {
+      if (error instanceof TokenExpiredError) {
+        throw new UnauthorizedException("Jwt Expired");
+      }
       throw new UnauthorizedException("Error while verifying token");
     }
     return true;

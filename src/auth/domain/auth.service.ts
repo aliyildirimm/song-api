@@ -25,7 +25,6 @@ export class AuthService {
         }
 
 
-        console.log('user', user);
         const artist = await this.artistService.getArtistByUserId(user.id);
         const jwtPayload = {
             username: user.username,

@@ -68,3 +68,5 @@ export class AppModule implements NestModule {
       .forRoutes('*');
   }
 }
+
+// maybe redis caching for the interceptors?

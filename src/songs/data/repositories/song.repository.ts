@@ -21,8 +21,10 @@ export class SongRepository {
     }
 
     async findOne(id: string): Promise<SongEntity> {
+        // i need to create mappers to ensure the results
         return await this.songRepository.findOne({
-            where: { id: +id }
+            where: { id: +id },
+            relations: ['artists']
         })
     }
 
