@@ -3,6 +3,8 @@ import { InjectRepository } from "@nestjs/typeorm";
 import { Repository } from "typeorm";
 
 import { UserEntity } from "./entitites";
+import { mapUserEntityToUser } from "./mappers/userEntity.mapper";
+import { User } from "src/users/domain/models/user.model";
 
 @Injectable()
 export class UsersRepository {
@@ -20,11 +22,13 @@ export class UsersRepository {
         });
     }
 
-    async getUserByUsername(username: string) {
-        return this.repository.findOne({
+    async getUserByUsername(username: string): Promise<User | null> {
+        const user = await this.repository.findOne({
             where: { username },
             select: ['username', 'id', 'password']
         });
+
+        return user ? mapUserEntityToUser(user) : null;
     }
 
     async getUserById(id: number) {

@@ -49,7 +49,6 @@ export class AuthGuard implements CanActivate {
           secret: process.env.JWT_SECRET ?? 'secret',
         }
       );
-
       request['user'] = payload;
     } catch(error: unknown) {
       if (error instanceof TokenExpiredError) {

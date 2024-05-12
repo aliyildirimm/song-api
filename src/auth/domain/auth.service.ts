@@ -1,9 +1,9 @@
 import { Injectable, UnauthorizedException } from '@nestjs/common';
-import { UserService } from 'src/users/domain/user.service';
 import * as bcrypt from 'bcrypt';
-
 import { JwtService } from '@nestjs/jwt';
-import { ArtistService } from 'src/artist/domain/artist.domain';
+
+import { UserService } from 'src/users/domain/user.service';
+import { ArtistService } from 'src/artist/domain/artist.service';
 
 @Injectable()
 export class AuthService {
@@ -23,7 +23,6 @@ export class AuthService {
         if (!isPasswordCorrect) {
             throw new UnauthorizedException('Password is incorrect');
         }
-
 
         const artist = await this.artistService.getArtistByUserId(user.id);
         const jwtPayload = {

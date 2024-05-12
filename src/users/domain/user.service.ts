@@ -16,7 +16,7 @@ export class UserService {
         return user;
     }
 
-    async getUserByUsername(username: string): Promise<User> {
+    async getUserByUsername(username: string): Promise<User | null> {
         return this.usersRepository.getUserByUsername(username);
     }
 

@@ -7,9 +7,6 @@ import {
 
 @Injectable()
 export class ArtistGuard implements CanActivate {
-  constructor(
-) {}
-
   async canActivate(context: ExecutionContext): Promise<boolean> {
     const request = context.switchToHttp().getRequest();
     if (!request.user) {

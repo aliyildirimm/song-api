@@ -1,11 +1,10 @@
 import { BadRequestException, Body, Controller, Delete, Get, Param, Post, Req, Request, UseGuards } from '@nestjs/common';
 import { SongService } from '../domain/song.service';
 import { CreateSongDto } from './dto';
-import { ArtistService } from 'src/artist/domain/artist.domain';
+import { ArtistService } from 'src/artist/domain/artist.service';
 import { ArtistGuard } from 'src/common/guards/artist.guard';
 import { RequestWithUser } from 'src/common/guards/auth.guard';
 import { SongOwnerGuard } from './guards/songOwner.guard';
-
 
 @Controller('songs')
 export class SongsController {
@@ -32,12 +31,7 @@ export class SongsController {
             throw new BadRequestException("The creator has to be in the artists list");
         }
 
-        const artists = await this.artistService.getArtists(createSongDto.artists);
-        if (artists.length !== createSongDto.artists.length) {
-            throw new BadRequestException('Some artists were not found');
-        }
-
-        return this.songService.create(createSongDto, artists);
+        return this.songService.create(createSongDto);
     }
 
     @UseGuards(ArtistGuard, SongOwnerGuard)
