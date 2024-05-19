@@ -1,11 +1,11 @@
-import { Inject, Injectable, UnauthorizedException } from "@nestjs/common";
+import { Injectable } from "@nestjs/common";
 import * as bcrypt from 'bcrypt';
 import { UsersRepository } from "../data/repository/users.repository";
 import { User } from "./models/user.model";
 
 @Injectable()
 export class UserService {
-    constructor(@Inject(UsersRepository) private readonly usersRepository: UsersRepository) {}
+    constructor(private readonly usersRepository: UsersRepository) {}
 
     async createUser(username: string, password: string) {
         // should i add one more key locally and make hash(hash(salt + secret) + password) ?

@@ -1,4 +1,4 @@
-import { HttpException, HttpStatus, Inject, Injectable, NestMiddleware } from "@nestjs/common";
+import { HttpException, HttpStatus, Injectable, NestMiddleware } from "@nestjs/common";
 import { Request, NextFunction } from "express";
 import { SongService } from "src/songs/domain/song.service";
 
@@ -10,7 +10,7 @@ interface RequesWithSongs extends Request {
 
 @Injectable()
 export class RequireSongsMiddleware implements NestMiddleware {
-    constructor(@Inject(SongService) private readonly songsService: SongService) {}
+    constructor(private readonly songsService: SongService) {}
 
     async use(req: RequesWithSongs, _res: Response, next: NextFunction) {
         const songIds: number[] = req.body.songIds;

@@ -10,9 +10,7 @@ import { SongService } from 'src/songs/domain/song.service';
 
 @Injectable()
 export class SongOwnerGuard implements CanActivate {
-  constructor(
-    private songService: SongService
-) {}
+  constructor(private songService: SongService) {}
 
   async canActivate(context: ExecutionContext): Promise<boolean> {
     const request = context.switchToHttp().getRequest();
