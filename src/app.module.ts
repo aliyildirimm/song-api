@@ -19,7 +19,7 @@ export const databaseConfig = (configService: ConfigService): TypeOrmModuleOptio
   password: configService.get('database.password'),
   database: configService.get('database.database'),
   synchronize: configService.get('database.synchronize'),
-  entities: configService.get('database.entities'),
+  entities: [__dirname + '/**/*.entity.ts'], // Directly specifying the path
 });
 
 export const jwtConfig = (configService: ConfigService): JwtModuleOptions  => ({
@@ -30,6 +30,7 @@ export const jwtConfig = (configService: ConfigService): JwtModuleOptions  => ({
 @Module({
   imports: [
     ConfigModule.forRoot({
+      envFilePath: process.env.NODE_ENV === 'test' ? '.env.test' : '.env',
       isGlobal: true,
       load: [config]
     }),
