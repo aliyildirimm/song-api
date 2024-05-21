@@ -4,6 +4,7 @@ import { AppModule } from "src/app.module";
 import { createTestAccount, deleteTestAccount, signInTestAccount } from "./utils";
 
 let app: INestApplication;
+let userId: number;
 let accessToken: string;
 
 beforeAll(async () => {
@@ -15,7 +16,10 @@ beforeAll(async () => {
     await app.init();
     await app.listen(3000);
     await createTestAccount(app);
-    accessToken = await signInTestAccount(app);
+  
+    const signInResult = await signInTestAccount(app);
+    userId = signInResult.userId;
+    accessToken = signInResult.accessToken;
 });
 
 afterAll(async () => {
@@ -24,4 +28,7 @@ afterAll(async () => {
   });
 
 export const getApp = () => app;
-export const getAccessToken = () => accessToken;
+export const getUserIdAndAccessToken = () => ({
+    userId,
+    accessToken
+});

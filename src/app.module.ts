@@ -10,6 +10,7 @@ import { AuthModule } from './auth/auth.module';
 import { AuthGuard } from './common/guards/auth.guard';
 import { ArtistModule } from './artist/artist.module';
 import config from './common/config/configuration';
+import { UserModule } from './users/user.module';
 
 export const databaseConfig = (configService: ConfigService): TypeOrmModuleOptions  => ({
   type: 'postgres',
@@ -49,6 +50,7 @@ export const jwtConfig = (configService: ConfigService): JwtModuleOptions  => ({
     SongsModule,
     PlaylistModule,
     ArtistModule,
+    UserModule,
   ],
   controllers: [],
   providers: [

@@ -13,7 +13,7 @@ export class AuthService {
         private readonly jwtService: JwtService
     ) {}
 
-    async signIn(username: string, password: string): Promise<{ username: string, accessToken: string }> {
+    async signIn(username: string, password: string): Promise<{ username: string, userId: number, accessToken: string }> {
         const user = await this.userService.getUserByUsername(username);
         if (!user) {
             throw new UnauthorizedException('User not found');
@@ -33,6 +33,7 @@ export class AuthService {
 
         return {
             username: user.username,
+            userId: user.id,
             accessToken: await this.jwtService.signAsync(jwtPayload)
         }
     }

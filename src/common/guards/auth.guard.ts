@@ -8,6 +8,7 @@ import { Reflector } from '@nestjs/core';
 import { JwtService, TokenExpiredError } from '@nestjs/jwt';
 import { Request } from 'express';
 import { IS_PUBLIC_KEY } from '../decorators/public';
+import { UserService } from 'src/users/domain/user.service';
 
 interface User {
   userId: number;
@@ -22,6 +23,7 @@ export interface RequestWithUser extends Request {
 @Injectable()
 export class AuthGuard implements CanActivate {
   constructor(
+    private userService: UserService,
     private jwtService: JwtService,
     private reflector: Reflector
 ) {}
@@ -49,6 +51,14 @@ export class AuthGuard implements CanActivate {
           secret: process.env.JWT_SECRET ?? 'secret',
         }
       );
+
+      // i added this because if a user is deleted, i don't want that token to be valid anymore
+      // could be found more efficient way to do this but for now this is enough
+      const user = await this.userService.getUserById(payload.userId);
+      if (user.length === 0) {
+        throw new UnauthorizedException("User not found");
+      }
+
       request['user'] = payload;
     } catch(error: unknown) {
       if (error instanceof TokenExpiredError) {

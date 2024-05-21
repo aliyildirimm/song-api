@@ -12,12 +12,16 @@ export const createTestAccount = async (app: INestApplication) => {
     }
 };
 
-export const signInTestAccount = async (app: INestApplication): Promise<string> => {
+export const signInTestAccount = async (app: INestApplication): Promise<{
+  username: string;
+  userId: number;
+  accessToken: string;
+}> => {
     try {
         const response = await request(app.getHttpServer())
           .post('/auth/sign-in')
           .send({ username: 'test', password: 'password' });       
-        return response.body.accessToken;
+        return response.body;
       } catch (error) {
         console.error('Error during sign in:', error);
       }
