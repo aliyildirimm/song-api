@@ -1,6 +1,8 @@
 import { INestApplication, UnauthorizedException } from '@nestjs/common';
 import * as request from 'supertest';
-import { getApp, getUserIdAndAccessToken } from '../init-server';
+import { createTestAccount, deleteTestAccount, signInTestAccount } from '../utils';
+import { AppModule } from 'src/app.module';
+import { Test, TestingModule } from '@nestjs/testing';
 
 describe('Users Controller (e2e)', () => {
   let app: INestApplication;
@@ -8,8 +10,21 @@ describe('Users Controller (e2e)', () => {
   let accessToken: string;
 
   beforeAll(async () => {
-    app = getApp();
-    ({ userId, accessToken } = getUserIdAndAccessToken());
+    const moduleFixture: TestingModule = await Test.createTestingModule({
+      imports: [AppModule],
+    }).compile();
+
+    app = moduleFixture.createNestApplication();
+    await app.init();
+    await app.listen(0);
+    await createTestAccount(app, { username: 'users-test', password: 'password' });
+  
+   ({userId, accessToken} = await signInTestAccount(app, { username: 'users-test', password: 'password' }));
+  });
+
+  afterAll(async () => {
+    await deleteTestAccount(app, accessToken);
+    app.close();
   });
 
   describe('GET /users/:id', () => {
@@ -27,7 +42,7 @@ describe('Users Controller (e2e)', () => {
       
       expect(result.body[0]).toEqual({
         id: userId,
-        username: 'test',
+        username: 'users-test',
       });
       expect(result.statusCode).toBe(200);
     });
