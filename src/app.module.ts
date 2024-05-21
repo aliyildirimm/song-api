@@ -1,4 +1,9 @@
-import { MiddlewareConsumer, Module, NestModule, ValidationPipe } from '@nestjs/common';
+import {
+  MiddlewareConsumer,
+  Module,
+  NestModule,
+  ValidationPipe,
+} from '@nestjs/common';
 import { TypeOrmModule, TypeOrmModuleOptions } from '@nestjs/typeorm';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { JwtModule, JwtModuleOptions } from '@nestjs/jwt';
@@ -12,7 +17,9 @@ import { ArtistModule } from './artist/artist.module';
 import config from './common/config/configuration';
 import { UserModule } from './users/user.module';
 
-export const databaseConfig = (configService: ConfigService): TypeOrmModuleOptions  => ({
+export const databaseConfig = (
+  configService: ConfigService,
+): TypeOrmModuleOptions => ({
   type: 'postgres',
   host: configService.get('database.host'),
   port: configService.get('database.port'),
@@ -23,7 +30,7 @@ export const databaseConfig = (configService: ConfigService): TypeOrmModuleOptio
   entities: [__dirname + '/**/*.entity.ts'], // Directly specifying the path
 });
 
-export const jwtConfig = (configService: ConfigService): JwtModuleOptions  => ({
+export const jwtConfig = (configService: ConfigService): JwtModuleOptions => ({
   secret: configService.get('jwt.secret'),
   signOptions: { expiresIn: configService.get('jwt.expiresIn') },
 });
@@ -33,7 +40,7 @@ export const jwtConfig = (configService: ConfigService): JwtModuleOptions  => ({
     ConfigModule.forRoot({
       envFilePath: process.env.NODE_ENV === 'test' ? '.env.test' : '.env',
       isGlobal: true,
-      load: [config]
+      load: [config],
     }),
     TypeOrmModule.forRootAsync({
       useFactory: databaseConfig,
@@ -66,9 +73,7 @@ export const jwtConfig = (configService: ConfigService): JwtModuleOptions  => ({
 })
 export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
-    consumer
-      .apply(LoggerMiddleware)
-      .forRoutes('*');
+    consumer.apply(LoggerMiddleware).forRoutes('*');
   }
 }
 

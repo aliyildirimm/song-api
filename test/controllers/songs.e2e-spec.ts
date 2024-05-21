@@ -1,13 +1,13 @@
 import { INestApplication } from '@nestjs/common';
 import { Test, TestingModule } from '@nestjs/testing';
-import { AppModule } from 'src/app.module';
 import * as request from 'supertest';
-import { createTestAccount, deleteTestAccount, signInTestAccount } from '../utils';
 import { DataSource } from 'typeorm';
+
+import { AppModule } from 'src/app.module';
+import { createTestAccount, deleteTestAccount, signInTestAccount } from '../utils';
 
 describe('Songs Controller (e2e)', () => {
   let app: INestApplication;
-  let userId: number;
   let accessToken: string;
   let dataSource: DataSource;
 
@@ -23,7 +23,7 @@ describe('Songs Controller (e2e)', () => {
     dataSource = moduleFixture.get<DataSource>(DataSource);
 
     await createTestAccount(app, { username: 'songs-test', password: 'password' });
-   ({userId, accessToken} = await signInTestAccount(app, { username: 'songs-test', password: 'password' }));
+   ({accessToken} = await signInTestAccount(app, { username: 'songs-test', password: 'password' }));
   });
 
   afterAll(async () => {

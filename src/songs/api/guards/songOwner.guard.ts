@@ -1,9 +1,9 @@
 import {
-    CanActivate,
-    ExecutionContext,
-    Injectable,
-    InternalServerErrorException,
-    UnauthorizedException,
+  CanActivate,
+  ExecutionContext,
+  Injectable,
+  InternalServerErrorException,
+  UnauthorizedException,
 } from '@nestjs/common';
 import { Song } from 'src/songs/domain/models/song.model';
 import { SongService } from 'src/songs/domain/song.service';
@@ -20,12 +20,14 @@ export class SongOwnerGuard implements CanActivate {
     try {
       song = await this.songService.findOne(request.params.id);
     } catch (error: unknown) {
-      throw new InternalServerErrorException("Error whole fetching song")
+      throw new InternalServerErrorException('Error whole fetching song');
     }
-  
-    const isOwner = song.artistIds.includes(artistId)
+
+    const isOwner = song.artistIds.includes(artistId);
     if (!isOwner) {
-      throw new UnauthorizedException("The artist is not one of the creator of the song");
+      throw new UnauthorizedException(
+        'The artist is not one of the creator of the song',
+      );
     }
 
     return true;

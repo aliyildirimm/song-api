@@ -1,15 +1,15 @@
-import { IsArray, IsNotEmpty, IsNumber, IsString } from "class-validator";
+import { IsArray, IsNotEmpty, IsNumber, IsString } from 'class-validator';
 
 export class CreatePlaylistDto {
-    @IsString()
-    @IsNotEmpty()
-    readonly name: string;
+  @IsString()
+  @IsNotEmpty()
+  readonly name: string;
 
-    @IsNumber()
-    @IsNotEmpty()
-    readonly userId: number;
+  @IsNumber()
+  @IsNotEmpty()
+  readonly userId: number;
 
-    @IsArray()
-    @IsNumber({}, { each: true })
-    readonly songIds: number[];
+  @IsArray()
+  @IsNumber({}, { each: true })
+  readonly songIds: number[];
 }

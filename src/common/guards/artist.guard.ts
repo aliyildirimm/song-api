@@ -1,8 +1,8 @@
 import {
-    CanActivate,
-    ExecutionContext,
-    Injectable,
-    UnauthorizedException,
+  CanActivate,
+  ExecutionContext,
+  Injectable,
+  UnauthorizedException,
 } from '@nestjs/common';
 
 @Injectable()
@@ -10,7 +10,9 @@ export class ArtistGuard implements CanActivate {
   async canActivate(context: ExecutionContext): Promise<boolean> {
     const request = context.switchToHttp().getRequest();
     if (!request.user) {
-      throw new UnauthorizedException('User is not authenticated, access denied');
+      throw new UnauthorizedException(
+        'User is not authenticated, access denied',
+      );
     }
 
     const artistId = request.user.artistId;

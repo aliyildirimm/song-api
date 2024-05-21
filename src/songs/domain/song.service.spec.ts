@@ -8,7 +8,7 @@ describe('SongsService', () => {
   let service: SongService;
 
   beforeEach(async () => {
-    service = new SongService(mockSongRepository)
+    service = new SongService(mockSongRepository);
   });
 
   it('should be defined', () => {
