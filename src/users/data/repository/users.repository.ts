@@ -22,6 +22,10 @@ export class UsersRepository {
         });
     }
 
+    async deleteUser(id: number) {
+        return this.repository.delete({ id });
+    }
+
     async getUserByUsername(username: string): Promise<User | null> {
         const user = await this.repository.findOne({
             where: { username },

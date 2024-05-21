@@ -1,4 +1,4 @@
-import { BadRequestException, Body, Controller, Delete, Get, Param, Post, Req, Request, UseGuards } from '@nestjs/common';
+import { BadRequestException, Body, Controller, Delete, Get, Param, Post, Request, UseGuards } from '@nestjs/common';
 import { SongService } from '../domain/song.service';
 import { CreateSongDto } from './dto';
 import { ArtistService } from 'src/artist/domain/artist.service';

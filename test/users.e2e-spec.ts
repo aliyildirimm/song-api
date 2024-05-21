@@ -16,7 +16,6 @@ describe('Users Controller (e2e)', () => {
     await app.init();
     await app.listen(3000);
 
-
     // Create user
     try {
       await request(app.getHttpServer())
@@ -38,8 +37,14 @@ describe('Users Controller (e2e)', () => {
 
   });
 
-  afterAll(() => {
-    // delete user
+  afterAll(async () => {
+    try {
+      await request(app.getHttpServer())
+        .delete('/users')
+        .set('Authorization', `Bearer ${accessToken}`);
+    } catch (error) {
+      console.error('Error during user deletion, delete manually:', error);
+    }
     app.close();
   })
   it('should return 401 when no token is provided', async () => {
