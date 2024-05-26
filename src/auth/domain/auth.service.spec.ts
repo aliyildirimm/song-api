@@ -74,6 +74,7 @@ describe('AuthService', () => {
       expect(result).toEqual({
         username: 'test',
         accessToken: 'accessToken',
+        userId: 1,
       });
     });
 
@@ -108,6 +109,7 @@ describe('AuthService', () => {
       expect(result).toEqual({
         username: 'test',
         accessToken: 'accessToken',
+        userId: 1,
       });
     });
   });
