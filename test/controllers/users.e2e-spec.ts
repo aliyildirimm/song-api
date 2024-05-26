@@ -18,8 +18,11 @@ describe('Users Controller (e2e)', () => {
     await app.init();
     await app.listen(0);
     await createTestAccount(app, { username: 'users-test', password: 'password' });
-  
-   ({userId, accessToken} = await signInTestAccount(app, { username: 'users-test', password: 'password' }));
+    const response = await signInTestAccount(app, { username: 'songs-test', password: 'password' });
+    if (!response) {
+      throw new Error('Should not happen');
+    }
+    ({ userId, accessToken } = response);
   });
 
   afterAll(async () => {

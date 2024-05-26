@@ -21,7 +21,7 @@ export const signInTestAccount = async (
   username: string;
   userId: number;
   accessToken: string;
-}> => {
+} | undefined> => {
     try {
         const response = await request(app.getHttpServer())
           .post('/auth/sign-in')

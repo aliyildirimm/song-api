@@ -16,11 +16,15 @@ export class SongOwnerGuard implements CanActivate {
     const request = context.switchToHttp().getRequest();
     const artistId = request.user.artistId;
 
-    let song: Song;
+    let song: Song | null;
     try {
       song = await this.songService.findOne(request.params.id);
     } catch (error: unknown) {
       throw new InternalServerErrorException('Error whole fetching song');
+    }
+
+    if (!song) {
+      throw new UnauthorizedException('Song not found');
     }
 
     const isOwner = song.artistIds.includes(artistId);
