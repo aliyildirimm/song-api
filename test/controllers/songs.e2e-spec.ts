@@ -45,10 +45,10 @@ describe('Songs Controller (e2e)', () => {
   describe('GET /songs', () => {
     beforeAll(async () => {
       await dataSource.query(
-        `INSERT INTO "User" (id, username, password) VALUES (1, 'user1', 'securepassword')`,
+        `INSERT INTO "User" (id, username, password) VALUES (2, 'user2', 'securepassword')`,
       );
       await dataSource.query(
-        `INSERT INTO "Artist" (id, name, "userId") VALUES (1, 'Artist 1', 1)`,
+        `INSERT INTO "Artist" (id, name, "userId") VALUES (1, 'Artist 1', 2)`,
       );
       await dataSource.query(
         `INSERT INTO "Song" (id, title, "releaseDate", duration, lyrics) VALUES (1, 'Song 1', '2021-01-01', 180, 'Lyrics of Song 1')`,
@@ -57,7 +57,7 @@ describe('Songs Controller (e2e)', () => {
         `INSERT INTO "song_artist" ("songId", "artistId") VALUES (1, 1)`,
       );
       await dataSource.query(
-        `INSERT INTO "Playlist" (id, name, "userId") VALUES (1, 'Playlist 1', 1)`,
+        `INSERT INTO "Playlist" (id, name, "userId") VALUES (1, 'Playlist 1', 2)`,
       );
       await dataSource.query(
         `INSERT INTO "playlist_song" ("songId", "playlistId") VALUES (1, 1)`,
@@ -77,7 +77,7 @@ describe('Songs Controller (e2e)', () => {
       await dataSource.query(`DELETE FROM "Playlist" WHERE id = 1`);
       await dataSource.query(`DELETE FROM "Song" WHERE id = 1`);
       await dataSource.query(`DELETE FROM "Artist" WHERE id = 1`);
-      await dataSource.query(`DELETE FROM "User" WHERE id = 1`);
+      await dataSource.query(`DELETE FROM "User" WHERE id = 2`);
     });
 
     it('should thorw UnauthorizedException when no token is provided', async () => {
