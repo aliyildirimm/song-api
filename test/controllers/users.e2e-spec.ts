@@ -1,6 +1,10 @@
 import { INestApplication, UnauthorizedException } from '@nestjs/common';
 import * as request from 'supertest';
-import { createTestAccount, deleteTestAccount, signInTestAccount } from '../utils';
+import {
+  createTestAccount,
+  deleteTestAccount,
+  signInTestAccount,
+} from '../utils';
 import { AppModule } from 'src/app.module';
 import { Test, TestingModule } from '@nestjs/testing';
 
@@ -17,8 +21,14 @@ describe('Users Controller (e2e)', () => {
     app = moduleFixture.createNestApplication();
     await app.init();
     await app.listen(0);
-    await createTestAccount(app, { username: 'users-test', password: 'password' });
-    const response = await signInTestAccount(app, { username: 'songs-test', password: 'password' });
+    await createTestAccount(app, {
+      username: 'users-test',
+      password: 'password',
+    });
+    const response = await signInTestAccount(app, {
+      username: 'songs-test',
+      password: 'password',
+    });
     if (!response) {
       throw new Error('Should not happen');
     }
@@ -32,9 +42,8 @@ describe('Users Controller (e2e)', () => {
 
   describe('GET /users/:id', () => {
     it('should return 401 when no token is provided', async () => {
-      const result = await request(app.getHttpServer())
-        .get('/users/12');
-      
+      const result = await request(app.getHttpServer()).get('/users/12');
+
       expect(result.statusCode).toBe(401);
     });
 
@@ -42,7 +51,7 @@ describe('Users Controller (e2e)', () => {
       const result = await request(app.getHttpServer())
         .get(`/users/${userId}`)
         .set('Authorization', `Bearer ${accessToken}`);
-      
+
       expect(result.body[0]).toEqual({
         id: userId,
         username: 'users-test',
@@ -53,9 +62,8 @@ describe('Users Controller (e2e)', () => {
 
   describe('DELETE /users', () => {
     it('should return 401 when no token is provided', async () => {
-      const result = await request(app.getHttpServer())
-        .delete('/users');
-      
+      const result = await request(app.getHttpServer()).delete('/users');
+
       expect(result.statusCode).toBe(401);
     });
 
@@ -63,10 +71,10 @@ describe('Users Controller (e2e)', () => {
       const result = await request(app.getHttpServer())
         .delete('/users')
         .set('Authorization', `Bearer ${accessToken}`);
-      
+
       const deletedUser = await request(app.getHttpServer())
-            .get(`/users/${userId}`)
-            .set('Authorization', `Bearer ${accessToken}`);
+        .get(`/users/${userId}`)
+        .set('Authorization', `Bearer ${accessToken}`);
 
       expect(deletedUser.statusCode).toBe(401);
       expect(result.statusCode).toBe(200);
