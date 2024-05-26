@@ -40,6 +40,10 @@ jobs:
         node-version: ${{ matrix.node-version }}
         cache: 'npm'
     - run: npm ci
+    - name: Initialize Database
+      run: |
+        psql -h localhost -p 5433 -U postgres -c "DROP DATABASE IF EXISTS postgres;"
+        psql -h localhost -p 5433 -U postgres -c "CREATE DATABASE postgres;"
     - run: npm run build --if-present
     - run: npm run lint
     - run: npm run test:unit
