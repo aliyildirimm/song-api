@@ -4,6 +4,7 @@ import {
   Controller,
   Delete,
   Get,
+  NotFoundException,
   Param,
   Post,
   Request,
@@ -24,8 +25,12 @@ export class SongsController {
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.songService.findOne(id);
+  async findOne(@Param('id') id: string) {
+    const song = await this.songService.findOne(id);
+    if (!song) {
+      throw new NotFoundException('Song not found');
+    }
+    return song;
   }
 
   @UseGuards(ArtistGuard)

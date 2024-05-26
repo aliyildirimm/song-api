@@ -5,7 +5,6 @@ export const createTestAccount = async (
   app: INestApplication,
   { username, password } : { username: string, password: string }
 ) => {
-    // Create user
     try {
         await request(app.getHttpServer())
             .post('/auth/sign-up')
