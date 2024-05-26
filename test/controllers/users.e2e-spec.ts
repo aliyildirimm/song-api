@@ -26,7 +26,7 @@ describe('Users Controller (e2e)', () => {
       password: 'password',
     });
     const response = await signInTestAccount(app, {
-      username: 'songs-test',
+      username: 'users-test',
       password: 'password',
     });
     if (!response) {

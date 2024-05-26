@@ -49,4 +49,4 @@ jobs:
         PGUSER: postgres
         PGPASSWORD: postgres
         PGDATABASE: postgres
-        PGPORT: 5433  # Make sure to match the port used in the services section
+        PGPORT: 5433
