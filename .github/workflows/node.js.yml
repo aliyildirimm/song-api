@@ -42,7 +42,8 @@ jobs:
     - run: npm ci
     - run: npm run build --if-present
     - run: npm run lint
-    - run: npm test
+    - run: npm run test:unit
+    - run: npm run test:integration
       env:
         PGHOST: localhost
         PGUSER: postgres
